@@ -1,10 +1,10 @@
-# 🍃 Spring_Boot_A
+# 🍃 Spring_Boot_C
 SSUMC 10기 SpringBoot 스터디 C조
 
 ## 💻 Member
 |써니|휴이|제이스|로건|
 | :---------:|:----------:|:----------:|:----------:|
-|[박서은](https://github.com/1PSE)|[윤석주](https://github.com/seokjuyoon)|[인석진](https://github.com/sjinssun)|[최원호](https://github.com/wonellyho)|
+|[박서은](https://github.com/1PSE)|[윤석주](https://github.com/SJYUN1010)|[인석진](https://github.com/sjinssun)|[최원호](https://github.com/wonellyho)|
 
 ## 📁 디렉토리 구조
 - src 디렉토리를 실제 작업을 진행하는 Spring Boot의 src와 일치시켜 주세요.
