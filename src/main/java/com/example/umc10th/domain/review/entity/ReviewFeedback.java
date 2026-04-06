@@ -7,7 +7,7 @@ import lombok.*;
 @Table(name = "review_feedback")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class ReviewFeedback {
 

@@ -11,7 +11,7 @@ import java.util.List;
 @Table(name = "regions")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class Region {
 

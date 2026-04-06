@@ -9,7 +9,7 @@ import lombok.*;
 @Table(name = "user_categories")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 public class UserCategory extends BaseEntity {
 
