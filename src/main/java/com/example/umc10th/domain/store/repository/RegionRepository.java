@@ -1,3 +1,3 @@
-﻿package com.example.umc10th.domain.store.repository;
+package com.example.umc10th.domain.store.repository;
 
 public interface RegionRepository {}
