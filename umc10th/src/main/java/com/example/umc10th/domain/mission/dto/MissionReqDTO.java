@@ -8,10 +8,8 @@ public class MissionReqDTO {
     // 미션 성공 누르기
     @Getter
     public static class UpdateMissionStatusDTO {
-        MissionStatus status;  // String → enum
+        MissionStatus status;
     }
-
-
 
 
 }

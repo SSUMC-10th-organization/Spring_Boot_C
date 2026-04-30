@@ -14,7 +14,7 @@ public class GeneralExceptionAdvice {
 
     // 프로젝트에서 발생한 예외 처리
     @ExceptionHandler(GeneralException.class)
-    public ResponseEntity<ApiResponse<Void>> handleMemberException(
+    public ResponseEntity<ApiResponse<Void>> handleGeneralException(
             GeneralException e
     ) {
         BaseErrorCode errorCode = e.getErrorCode();

@@ -6,7 +6,6 @@ import java.util.List;
 public class MemberReqDTO {
 
     // 회원가입
-    // 와프와 erd보면,
     @Getter
     public static class SignUpDTO {
         String name;

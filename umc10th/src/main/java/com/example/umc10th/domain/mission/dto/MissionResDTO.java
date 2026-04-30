@@ -17,7 +17,7 @@ public class MissionResDTO {
             Long missionId,
             String storeName,
             Integer targetPoint,
-            String missionSpec,
+            String condition,
             MissionStatus status
     ) {}
 
