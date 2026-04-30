@@ -5,6 +5,7 @@ import java.util.List;
 
 public class MemberReqDTO {
 
+    // 회원가입
     @Getter
     public static class SignUpDTO {
         String name;
@@ -14,4 +15,7 @@ public class MemberReqDTO {
         List<String> favoriteFoodTypes;
         List<Long> agreeTermIds;
     }
+
+    // 마이페이지 - 추가
+    public record GetInfo(Long id) {}
 }

@@ -8,4 +8,14 @@ public class MemberResDTO {
     public record SignUpDTO(
             Long memberId
     ) {}
+
+    // 마이페이지
+    @Builder
+    public record GetInfo(
+            String name,
+            String profileUrl,
+            String email,
+            String phoneNumber,
+            Integer point
+    ) {}
 }
