@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.mission.dto;
 
+import com.example.umc10th.domain.mission.enums.MissionStatus;
 import lombok.Builder;
 import java.util.List;
 
@@ -17,13 +18,13 @@ public class MissionResDTO {
             String storeName,
             Integer targetPoint,
             String missionSpec,
-            String status
+            MissionStatus status
     ) {}
 
     // 미션 성공 누르기
     @Builder
     public record UpdateMissionStatusDTO(
             Long memberMissionId,
-            String status
+            MissionStatus status
     ) {}
 }

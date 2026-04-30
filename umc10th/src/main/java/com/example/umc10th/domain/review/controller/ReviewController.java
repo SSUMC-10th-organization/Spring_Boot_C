@@ -9,13 +9,12 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/reviews")
+@RequestMapping("/stores")
 public class ReviewController {
 
     // 리뷰 작성
-    // POST /reviews/{storeId}
-    // storeId는 path variable로 받고, requestBody에서는 제거
-    @PostMapping("/{storeId}")
+    // POST /stores/{storeId}/reviews
+    @PostMapping("/{storeId}/reviews")
     public ApiResponse<ReviewResDTO.CreateReviewDTO> createReview(
             @RequestHeader("Authorization") String authorization,
             @PathVariable Long storeId,

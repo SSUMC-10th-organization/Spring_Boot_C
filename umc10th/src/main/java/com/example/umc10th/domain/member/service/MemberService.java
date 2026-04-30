@@ -14,9 +14,11 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository memberRepository;  // 오타 수정
+    private final MemberRepository memberRepository;
 
-    public MemberResDTO.GetInfo getInfo(MemberReqDTO.GetInfo dto) {
+    public MemberResDTO.GetInfo getInfo(
+            MemberReqDTO.GetInfo dto
+    ) {
         // DTO에서 유저 ID 추출
         Long memberId = dto.id();
         // DB에서 해당 유저 ID로 데이터 조회

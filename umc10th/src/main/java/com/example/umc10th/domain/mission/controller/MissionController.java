@@ -2,6 +2,7 @@ package com.example.umc10th.domain.mission.controller;
 
 import com.example.umc10th.domain.mission.dto.MissionReqDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
+import com.example.umc10th.domain.mission.enums.MissionStatus;
 import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class MissionController {
     @GetMapping
     public ApiResponse<MissionResDTO.MissionListDTO> getMissions(
             @RequestHeader("Authorization") String authorization,
-            @RequestParam String status
+            @RequestParam MissionStatus status
     ) {
         return ApiResponse.onSuccess(MissionSuccessCode.GET_MISSIONS_SUCCESS, null);
     }
