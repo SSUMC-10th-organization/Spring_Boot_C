@@ -5,6 +5,7 @@ import com.example.umc10th.global.apipayload.code.GeneralErrorCode;
 import com.example.umc10th.global.apipayload.exception.GeneralException;
 
 import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -13,7 +14,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.util.HashMap;
 import java.util.Map;
 
-
+@Slf4j
 @RestControllerAdvice
 public class GeneralExceptionAdvice {
 
@@ -63,7 +64,7 @@ public class GeneralExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Object>> handleException(Exception ex) {
 
-        ex.printStackTrace();
+        log.error("Unhandled exception occurred", ex);
 
         BaseErrorCode code = GeneralErrorCode.INTERNAL_SERVER_ERROR;
 
