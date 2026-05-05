@@ -27,4 +27,8 @@ public class UserMission {
 
     @Enumerated(EnumType.STRING)
     private MissionStatus status;
+
+    public void updateStatus(MissionStatus status) {
+        this.status = status;
+    }
 }
