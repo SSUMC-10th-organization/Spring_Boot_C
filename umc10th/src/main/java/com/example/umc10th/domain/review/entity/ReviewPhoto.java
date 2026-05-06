@@ -19,7 +19,7 @@ public class ReviewPhoto{
     @Column(name = "photo_url", nullable = true, columnDefinition = "TEXT")
     private String photoUrl;
 
-    // 1:N을 나타내고 싶은데, 양방향을 걸기싫으면 한쪽에만 ManyToOne
+    // 1:N을 나타내고 싶은데, 양방향을 걸기 싫으면 한쪽에만 ManyToOne
     // Review(1) : ReviewPhoto(N)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "review_id")

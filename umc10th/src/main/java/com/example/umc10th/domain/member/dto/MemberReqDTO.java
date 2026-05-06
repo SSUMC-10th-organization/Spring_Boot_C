@@ -17,5 +17,7 @@ public class MemberReqDTO {
     }
 
     // 마이페이지 - 추가
-    public record GetInfo(Long id) {}
+    public record GetInfo(
+            Long id
+    ) {}
 }

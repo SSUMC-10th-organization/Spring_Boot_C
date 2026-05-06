@@ -2,6 +2,7 @@ package com.example.umc10th.domain.member.entity;
 
 import com.example.umc10th.domain.member.entity.mapping.MemberFood;
 import com.example.umc10th.domain.member.entity.mapping.MemberTerm;
+import com.example.umc10th.domain.member.enums.Sex;
 import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.global.entity.BaseEntity;
 import lombok.AllArgsConstructor;
@@ -35,7 +36,7 @@ public class Member extends BaseEntity {
 
     @Column(name = "sex", nullable = false)
     @Enumerated(EnumType.STRING) // enum이면 @Enumerated 추가
-    private String sex;
+    private Sex sex;
 
     @Column(name = "birth", nullable = false)
     private LocalDate birth;

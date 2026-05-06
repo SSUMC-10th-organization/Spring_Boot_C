@@ -37,6 +37,7 @@ public class Store {
 
     // Location(1) : Store(N)
     // Store가 N이니까 @ManyToOne
+    // 가게보고 어떤 지역에 있는지 조회할 수 있으니까 양방향
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "location_id")
     private Location location;
@@ -50,4 +51,5 @@ public class Store {
     // Store(1) : Review(N)
     @OneToMany(mappedBy = "store")
     private List<Review> reviewList = new ArrayList<>();
+
 }

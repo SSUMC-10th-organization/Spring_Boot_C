@@ -33,7 +33,7 @@ public class Review extends BaseEntity {
     // Store(1) : Review(N)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "store_id")
-    private Store store;
+    private Store store; // Review가 Store를 가리키는 필드명
 
     // Member(1) : Review(N)
     @ManyToOne(fetch = FetchType.LAZY)
