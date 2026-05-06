@@ -1,12 +1,13 @@
 package com.example.umc10th.domain.review.dto;
 
 import lombok.Getter;
-import org.springframework.web.bind.annotation.GetMapping;
+
+import java.math.BigDecimal;
 
 public class ReviewReqDTO {
     @Getter
-    public static class CreativeReviewDTO {
-        Float score;
+    public static class CreateReviewDTO {
+        BigDecimal score;
         String reviewContent;
     }
 }

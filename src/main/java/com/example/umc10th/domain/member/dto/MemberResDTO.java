@@ -8,5 +8,14 @@ public class MemberResDTO {
     public record SignUpDTO(
             Long memberId
     ) {}
+    //마이페이지 조회
+    @Builder
+    public record MyPageDTO(
+            String name,
+            String email,
+            String phoneNumber,
+            String profileUrl,
+            Integer point
+    ) {}
 
 }
