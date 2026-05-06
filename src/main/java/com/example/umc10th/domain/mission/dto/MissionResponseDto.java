@@ -13,7 +13,9 @@ public class MissionResponseDto {
     public record MissionItem(
             Long missionId,
             String storeName,
-            String reward,
+            String missionTitle,
+            String description,
+            Integer rewardPoints,
             MissionStatus status,
             LocalDateTime deadline
     ) {
@@ -21,8 +23,7 @@ public class MissionResponseDto {
 
     public record MissionListResult(
             List<MissionItem> missionList,
-            Integer totalCount,
-            Boolean isLast
+            Boolean hasNext
     ) {
     }
 }

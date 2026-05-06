@@ -20,6 +20,6 @@ public class ReviewFeedback {
     @JoinColumn(name = "review_id")
     private Review review;
 
-    @Column(columnDefinition = "CHAR(1)")
+    @Column(columnDefinition = "TEXT")
     private String content;
 }

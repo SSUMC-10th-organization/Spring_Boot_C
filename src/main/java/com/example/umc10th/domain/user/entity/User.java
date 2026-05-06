@@ -40,6 +40,15 @@ public class User extends BaseEntity {
 
     private Integer point;
 
+    @Column(length = 100)
+    private String email;
+
+    @Column(length = 20)
+    private String phone;
+
+    @Column(name = "profile_image_url")
+    private String profileImageUrl;
+
     @Builder.Default
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserCategory> userCategories = new ArrayList<>();
