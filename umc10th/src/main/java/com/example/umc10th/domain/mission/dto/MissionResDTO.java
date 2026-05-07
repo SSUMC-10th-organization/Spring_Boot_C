@@ -27,4 +27,26 @@ public class MissionResDTO {
             Long memberMissionId,
             MissionStatus status
     ) {}
+
+
+
+    // 홈화면 - 도전 가능한 미션 목록
+    @Builder
+    public record HomeMissionItemDTO(
+            Long missionId,
+            String storeName,
+            String category,
+            Integer point,
+            String condition,
+            Integer deadline
+    ) {}
+
+    @Builder
+    public record HomeMissionListDTO(
+            List<HomeMissionItemDTO> missions,
+            Integer totalPage,
+            Long totalElements,
+            Boolean isFirst,
+            Boolean isLast
+    ) {}
 }
