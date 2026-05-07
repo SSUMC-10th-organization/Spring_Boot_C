@@ -5,7 +5,7 @@ import java.util.List;
 
 public class MemberReqDTO {
 
-    // 회원가입
+    // 회원가입 inner에는 DTO를 안붙이는게 관례긴한데...
     @Getter
     public static class SignUpDTO {
         String name;
@@ -17,7 +17,7 @@ public class MemberReqDTO {
     }
 
     // 마이페이지 - 추가
-    public record GetInfo(
+    public record GetMyPage(
             Long id
     ) {}
 }

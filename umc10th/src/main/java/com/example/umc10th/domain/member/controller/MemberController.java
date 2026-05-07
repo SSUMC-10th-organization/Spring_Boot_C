@@ -19,21 +19,22 @@ public class MemberController {
     private final MemberService memberService;
 
     // 마이페이지 - 회원 정보 조회
-    @Operation(summary = "마이페이지 정보 조회")
-    @PostMapping("/me")
-    public ApiResponse<MemberResDTO.GetInfo> getInfo(
-            @RequestBody MemberReqDTO.GetInfo dto
+    @Operation(summary = "마이페이지 정보 조회") // SwaggerUI에 /me 옆에 마이페이지 정보조회라고 뜸(프론트를 위해)
+    @GetMapping("/me")
+    public ApiResponse<MemberResDTO.MyPageInfo> getMyPage(
+            @RequestBody MemberReqDTO.GetMyPage dto // Json->DTO 자동변환
     ) {
+        // 리턴에서 서비스 호출 + 응답을 포장
         return ApiResponse.onSuccess(
                 MemberSuccessCode.MEMBER_INFO_OK,
-                memberService.getInfo(dto)
+                memberService.getMyPage(dto)
         );
     }
 
     // 마이페이지 - 작성한 리뷰 페이징 조회
     @Operation(summary = "내가 작성한 리뷰 페이징 조회")
     @GetMapping("/{memberId}/reviews")
-    public ApiResponse<MemberResDTO.ReviewList> getMyReviews(
+    public ApiResponse<MemberResDTO.MyPageReviewList> getMyReviews(
             @PathVariable Long memberId,
             @RequestParam(defaultValue = "0") Integer page,
             @RequestParam(defaultValue = "10") Integer size
