@@ -24,9 +24,10 @@ public class MissionController {
             @RequestParam Long locationId,
             @RequestParam(defaultValue = "0") int page
     ) {
+        Long memberId = Long.parseLong(authorization); // 빠져있던 부분 추가
         return ApiResponse.onSuccess(
                 MissionSuccessCode.GET_MISSIONS_SUCCESS,
-                missionService.getHomeMissions(locationId, page)
+                missionService.getHomeMissions(locationId, memberId, page)
         );
     }
 

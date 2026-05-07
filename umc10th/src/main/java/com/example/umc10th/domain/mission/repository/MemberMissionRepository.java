@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 public interface MemberMissionRepository extends JpaRepository<MemberMission, Long> {
 
     // 특정 멤버의 미션 상태별 페이징 조회
+    // 내가 도전중인 미션들 → MemberMission 테이블 조회
     @Query("SELECT mm FROM MemberMission mm JOIN FETCH mm.mission m JOIN FETCH m.store WHERE mm.member.id = :memberId AND mm.isCompleted = :status")
     Page<MemberMission> findByMemberIdAndStatus(
             @Param("memberId") Long memberId,

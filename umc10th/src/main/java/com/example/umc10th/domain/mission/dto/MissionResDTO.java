@@ -38,7 +38,7 @@ public class MissionResDTO {
             String category,
             Integer point,
             String condition,
-            Integer dDay
+            Integer deadline
     ) {}
 
     @Builder

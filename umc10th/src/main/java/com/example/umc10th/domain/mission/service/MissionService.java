@@ -35,7 +35,19 @@ public class MissionService {
         return MissionConverter.toMissionListDTO(page);
     }
 
-    // 미션 상태 업데이트 (진행중 → 진행완료)
+    // 홈화면 - 도전 가능한 미션 목록
+    public MissionResDTO.HomeMissionListDTO getHomeMissions(Long locationId, Long memberId, int page) {
+
+        Page<Mission> missionPage = missionRepository.findMissionsByLocationId(
+                locationId, memberId,PageRequest.of(page, 10)
+        );
+
+        return MissionConverter.toHomeMissionListDTO(missionPage);
+    }
+
+
+
+    // 미션 상태 업데이트 (진행중 → 진행완료) _아직 컨버터 적용안했습니다.
     @Transactional
     public MissionResDTO.UpdateMissionStatusDTO updateMissionStatus(Long memberMissionId, MissionStatus status) {
 
@@ -54,32 +66,6 @@ public class MissionService {
         return MissionResDTO.UpdateMissionStatusDTO.builder()
                 .memberMissionId(updated.getId())
                 .status(updated.getIsCompleted())
-                .build();
-    }
-
-    // 홈화면 - 도전 가능한 미션 목록
-    public MissionResDTO.HomeMissionListDTO getHomeMissions(Long locationId, int page) {
-
-        Page<Mission> missionPage = missionRepository.findMissionsByLocationId(
-                locationId, PageRequest.of(page, 10)
-        );
-
-        List<MissionResDTO.HomeMissionItemDTO> missions = missionPage.getContent().stream()
-                .map(m -> MissionResDTO.HomeMissionItemDTO.builder()
-                        .missionId(m.getId())
-                        .storeName(m.getStore().getName())
-                        .point(m.getPoint())
-                        .condition(m.getCondition())
-                        .dDay((int) ChronoUnit.DAYS.between(LocalDate.now(), m.getDeadline()))
-                        .build()
-                ).toList();
-
-        return MissionResDTO.HomeMissionListDTO.builder()
-                .missions(missions)
-                .totalPage(missionPage.getTotalPages())
-                .totalElements(missionPage.getTotalElements())
-                .isFirst(missionPage.isFirst())
-                .isLast(missionPage.isLast())
                 .build();
     }
 }
