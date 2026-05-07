@@ -16,8 +16,6 @@ public class MissionController {
 
     private final MissionService missionService;
 
-
-
     // 홈화면 - 도전 가능한 미션 목록
     // GET /members/me/missions/home?locationId=1&page=0
     @GetMapping("/home")
@@ -37,13 +35,14 @@ public class MissionController {
     // GET /members/me/missions?status=COMPLETED
     @GetMapping
     public ApiResponse<MissionResDTO.MissionListDTO> getMissions(
-            @RequestHeader("Authorization") String authorization,
-            @RequestParam MissionStatus status
+            @RequestHeader("Authorization") String authorization, // 헤더에서 문자열로  Authorization 키의 값을 꺼냄
+            @RequestParam MissionStatus status // / URL 파라미터에서 꺼냄
     ) {
-        Long memberId = Long.parseLong(authorization);
+        Long memberId = Long.parseLong(authorization); // 헤더값 꺼낸거 숫자로 변환해서 사용
+
         return ApiResponse.onSuccess(
                 MissionSuccessCode.GET_MISSIONS_SUCCESS,
-                missionService.getMissions(memberId, status)
+                missionService.getMissions(memberId, status) // 서비스레이어로 넘기기
         );
     }
 

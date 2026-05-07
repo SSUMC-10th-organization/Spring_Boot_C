@@ -1,5 +1,6 @@
 package com.example.umc10th.domain.mission.service;
 
+import com.example.umc10th.domain.mission.converter.MissionConverter;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.mission.entity.mapping.MemberMission;
@@ -31,19 +32,7 @@ public class MissionService {
                 memberId, status, PageRequest.of(0, 10)
         );
 
-        List<MissionResDTO.MissionItemDTO> missions = page.getContent().stream()
-                .map(mm -> MissionResDTO.MissionItemDTO.builder()
-                        .missionId(mm.getMission().getId())
-                        .storeName(mm.getMission().getStore().getName())
-                        .targetPoint(mm.getMission().getPoint())
-                        .condition(mm.getMission().getCondition())
-                        .status(mm.getIsCompleted())
-                        .build()
-                ).toList();
-
-        return MissionResDTO.MissionListDTO.builder()
-                .missions(missions)
-                .build();
+        return MissionConverter.toMissionListDTO(page);
     }
 
     // 미션 상태 업데이트 (진행중 → 진행완료)
