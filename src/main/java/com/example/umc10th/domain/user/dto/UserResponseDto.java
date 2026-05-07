@@ -30,4 +30,13 @@ public class UserResponseDto {
             LocalDateTime completedAt
     ) {
     }
+
+    public record MyProfile(
+            String profileImageUrl,
+            String name,
+            String email,
+            String phone,
+            Integer point
+    ) {
+    }
 }

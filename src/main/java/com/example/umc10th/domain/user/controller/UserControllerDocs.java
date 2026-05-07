@@ -27,4 +27,9 @@ public interface UserControllerDocs {
     ResponseEntity<ApiResponse<UserResponseDto.CompleteMissionResult>> completeMission(
             @RequestHeader("X-User-Id") Long userId,
             @Valid @RequestBody UserRequestDto.CompleteMission request);
+
+    @Operation(summary = "내 프로필 조회")
+    @GetMapping("/profile")
+    ResponseEntity<ApiResponse<UserResponseDto.MyProfile>> getMyProfile(
+            @RequestHeader("X-User-Id") Long userId);
 }

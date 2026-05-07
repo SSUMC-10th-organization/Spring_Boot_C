@@ -1,28 +1,31 @@
 package com.example.umc10th.domain.mission.converter;
 
 import com.example.umc10th.domain.mission.dto.MissionResponseDto;
+import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.user.entity.UserMission;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
 public class MissionConverter {
 
     public static MissionResponseDto.MissionItem toMissionItem(UserMission userMission) {
+        Mission mission = userMission.getMission();
         return new MissionResponseDto.MissionItem(
-                userMission.getMission().getId(),
-                userMission.getMission().getStore().getName(),
-                userMission.getMission().getTitle(),
-                userMission.getMission().getDescription(),
-                userMission.getMission().getRewardPoints(),
-                userMission.getMission().getDeadlineDay(),
-                userMission.getStatus()
+                mission.getId(),
+                mission.getStore().getName(),
+                mission.getTitle(),
+                mission.getDescription(),
+                mission.getRewardPoints(),
+                userMission.getStatus(),
+                mission.getDeadlineDay()
         );
     }
 
-    public static MissionResponseDto.MissionListResult toMissionListResult(List<UserMission> userMissions) {
-        List<MissionResponseDto.MissionItem> items = userMissions.stream()
+    public static MissionResponseDto.MissionListResult toMissionListResult(Slice<UserMission> slice) {
+        List<MissionResponseDto.MissionItem> items = slice.getContent().stream()
                 .map(MissionConverter::toMissionItem)
                 .toList();
-        return new MissionResponseDto.MissionListResult(items);
+        return new MissionResponseDto.MissionListResult(items, slice.hasNext());
     }
 }
