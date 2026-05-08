@@ -1,9 +1,9 @@
-package com.example.umc10th.global.apiPayload.handler;
+package com.example.umc10th.global.exception.handler;
 
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.apiPayload.code.BaseErrorCode;
 import com.example.umc10th.global.apiPayload.code.GeneralErrorCode;
-import com.example.umc10th.global.apiPayload.exception.GeneralException;
+import com.example.umc10th.global.exception.GeneralException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
