@@ -35,4 +35,21 @@ public class ReviewResponseDto {
             Long feedbackId
     ) {
     }
+
+    public record MyReviewItem(
+            Long reviewId,
+            String storeName,
+            Integer star,
+            String content,
+            LocalDateTime createdAt
+    ) {
+    }
+
+    public record MyReviewListResult(
+            List<MyReviewItem> reviewList,
+            Boolean hasNext,
+            Long nextCursorId,
+            Integer nextCursorStar
+    ) {
+    }
 }

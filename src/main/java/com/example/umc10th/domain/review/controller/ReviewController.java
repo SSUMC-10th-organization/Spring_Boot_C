@@ -37,4 +37,14 @@ public class ReviewController implements ReviewControllerDocs {
             @Valid @RequestBody ReviewRequestDto.AddFeedback request) {
         return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.CREATED, reviewService.addFeedback(reviewId, request)));
     }
+
+    @GetMapping("/my")
+    public ResponseEntity<ApiResponse<ReviewResponseDto.MyReviewListResult>> getMyReviews(
+            @RequestHeader("X-User-Id") Long userId,
+            @RequestParam(required = false) Long lastId,
+            @RequestParam(required = false) Integer lastStar,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK,
+                reviewService.getMyReviews(userId, lastId, lastStar, sortBy)));
+    }
 }

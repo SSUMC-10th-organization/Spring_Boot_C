@@ -26,4 +26,13 @@ public class MissionResponseDto {
             Boolean hasNext
     ) {
     }
+
+    public record MyMissionListResult(
+            List<MissionItem> missionList,
+            int currentPage,
+            int totalPages,
+            long totalElements,
+            Boolean hasNext
+    ) {
+    }
 }
