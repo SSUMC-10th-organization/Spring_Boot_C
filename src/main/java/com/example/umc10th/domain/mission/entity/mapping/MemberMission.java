@@ -2,6 +2,7 @@ package com.example.umc10th.domain.mission.entity.mapping;
 
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.mission.entity.Mission;
+import com.example.umc10th.domain.mission.enums.MissionStatus;
 import com.example.umc10th.global.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
@@ -19,7 +20,7 @@ public class MemberMission extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
-    private Boolean isComplete;
+    private MissionStatus status;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

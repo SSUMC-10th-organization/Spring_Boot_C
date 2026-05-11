@@ -14,40 +14,44 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/missions")
+@RequestMapping("/api/missions")
 public class MissionController {
 
     private final MissionService missionService;
 
     // 1. 홈화면 미션 목록 조회
     @GetMapping
-    public ApiResponse<Page<MissionResDTO.MissionDTO>> getMissions(
+    public ApiResponse<MissionResDTO.Pagination<MissionResDTO.MissionDTO>> getMissions(
             @RequestParam Long regionId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(required = false) String sort
     ) {
         return ApiResponse.onSuccess(MissionSuccessCode.GET_MISSIONS_SUCCESS,
-                missionService.getMissions(regionId, page, size));
+                missionService.getMissions(regionId, pageNumber, pageSize, sort));
     }
 
     // 2. 내 미션 목록 조회 (진행중/완료)
     @GetMapping("/me")
-    public ApiResponse<Page<MissionResDTO.MissionDTO>> getMyMissions(
-            @RequestParam Long memberId,
+    public ApiResponse<MissionResDTO.Pagination<MissionResDTO.MissionDTO>> getMyMissions(
+            @RequestBody MissionReqDTO.GetMyMissions request,
             @RequestParam String status,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "0") Integer pageNumber,
+            @RequestParam(defaultValue = "10") Integer pageSize,
+             @RequestParam(required = false) String sort
     ) {
         return ApiResponse.onSuccess(MissionSuccessCode.GET_MY_MISSIONS_SUCCESS,
-                missionService.getMyMissions(memberId, status, page, size));
+                missionService.getMyMissions(request.memberId(), status, pageNumber, pageSize, sort));
     }
 
     // 3. 미션 성공 요청
     @PatchMapping("/{missionId}/status")
     public ApiResponse<MissionResDTO.StatusUpdateDTO> updateMissionStatus(
             @PathVariable Long missionId,
-            @RequestBody @Valid MissionReqDTO.StatusUpdateDTO request
+            @RequestBody MissionReqDTO.StatusUpdateDTO request
     ) {
         return ApiResponse.onSuccess(MissionSuccessCode.UPDATE_MISSION_STATUS_SUCCESS, null);
     }
+
+
 }
