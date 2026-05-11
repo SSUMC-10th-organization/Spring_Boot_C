@@ -34,11 +34,27 @@ public class MissionService {
     private final MemberMissionRepository memberMissionRepository;
     private final StoreRepository storeRepository;
 
-    // 회원 미션 목록 조회
-    public MissionResDTO.MissionListDTO getMissions(Long memberId, MissionStatus status) {
+    // 회원 미션 목록 조회 (내가 진행 중인 미션 조회하기)_ 기존 페이지 하드코딩방식
+//    public MissionResDTO.MissionListDTO getMissions(Long memberId, MissionStatus status) {
+//
+//        Page<MemberMission> page = memberMissionRepository.findByMemberIdAndStatus(
+//                memberId, status, PageRequest.of(0, 10)
+//        );
+//
+//        return MissionConverter.toMissionListDTO(page);
+//    }
+
+    // 미션6주차_1 수정 - 페이지 정보를 파라미터로 받음
+    public MissionResDTO.MissionListDTO getMissions(
+            Long memberId,
+            MissionStatus status,
+            Integer pageSize,
+            Integer pageNumber
+    ) {
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
 
         Page<MemberMission> page = memberMissionRepository.findByMemberIdAndStatus(
-                memberId, status, PageRequest.of(0, 10)
+                memberId, status, pageRequest
         );
 
         return MissionConverter.toMissionListDTO(page);

@@ -9,6 +9,13 @@ import java.time.LocalDate;
 
 public class MissionReqDTO {
 
+
+    // 내가 진행중인 미션 조회 요청 DTO
+    public record GetMissions(
+            @NotNull(message = "사용자 ID는 필수입니다.")
+            Long memberId
+    ){}
+
     // 미션 성공 누르기
     @Getter
     public static class UpdateMissionStatusDTO {

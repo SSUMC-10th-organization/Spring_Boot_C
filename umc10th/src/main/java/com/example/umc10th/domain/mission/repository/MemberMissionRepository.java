@@ -18,4 +18,11 @@ public interface MemberMissionRepository extends JpaRepository<MemberMission, Lo
             @Param("status") MissionStatus status,
             Pageable pageable
     );
+
+    // 내 진행중인 미션 페이지네이션 조회
+    Page<MemberMission> findAllByMember_IdAndIsCompleted(
+            Long memberId,
+            MissionStatus isCompleted,
+            Pageable pageable
+    );
 }

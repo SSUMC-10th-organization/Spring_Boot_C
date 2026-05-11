@@ -24,6 +24,8 @@ public class MissionConverter {
                 .status(mm.getIsCompleted())
                 .build();
     }
+
+    // 미션1로 페이지정보 추가
     // Page<MemberMission> → MissionListDTO
     public static MissionResDTO.MissionListDTO toMissionListDTO(Page<MemberMission> page) {
         List<MissionResDTO.MissionItemDTO> missions = page.getContent().stream()
@@ -32,7 +34,12 @@ public class MissionConverter {
         // missions List를 응답DTO로 포장
         return MissionResDTO.MissionListDTO.builder()
                 .missions(missions)
+                .pageNumber(page.getNumber())          // 페이지정보추가
+                .pageSize(page.getSize())              //
+                .totalElements(page.getTotalElements())//
+                .totalPages(page.getTotalPages())      //
                 .build();
+
     }
 
 

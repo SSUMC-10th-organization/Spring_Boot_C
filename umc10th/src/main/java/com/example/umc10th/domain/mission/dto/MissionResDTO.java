@@ -9,7 +9,11 @@ public class MissionResDTO {
     // 미션 목록 조회
     @Builder
     public record MissionListDTO(
-            List<MissionItemDTO> missions
+            List<MissionItemDTO> missions,
+            Integer pageNumber,
+            Integer pageSize,
+            Long totalElements,
+            Integer totalPages
     ) {}
 
     @Builder
@@ -74,5 +78,25 @@ public class MissionResDTO {
             Boolean hasNext,       // 다음 데이터 존재 여부
             String nextCursor,     // 다음 요청에 사용할 커서
             Integer pageSize       // 페이지 크기
+    ){}
+
+    // 6주차 미션1
+    @Builder
+    public record OffsetPagination<T>(
+            List<T> data,
+            Integer pageNumber,
+            Integer pageSize,
+            Long totalElements,
+            Integer totalPages
+    ){}
+
+    // 내가 진행중인 미션 응답 DTO
+    @Builder
+    public record InProgressMission(
+            Long memberMissionId,
+            Long missionId,
+            String storeName,
+            Integer point,
+            String conditional
     ){}
 }
