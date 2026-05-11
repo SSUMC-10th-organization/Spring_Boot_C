@@ -17,7 +17,7 @@ public class MissionResDTO {
             Long missionId,
             String storeName,
             Integer targetPoint,
-            String condition,
+            String conditional,
             MissionStatus status
     ) {}
 
@@ -37,7 +37,7 @@ public class MissionResDTO {
             String storeName,
             String category,
             Integer point,
-            String condition,
+            String conditional,
             Integer deadline
     ) {}
 
@@ -49,4 +49,20 @@ public class MissionResDTO {
             Boolean isFirst,
             Boolean isLast
     ) {}
+
+    // 가게 미션조회
+    @Builder
+    public record GetMission(
+            Long missionId,
+            Integer point,
+            String conditional
+    ){}
+
+    // 페이지네이션 틀 — 제네릭으로 어떤 타입이든 담을 수 있음
+    @Builder
+    public record Pagination<T>(
+            List<T> data,         // 실제 데이터
+            Integer pageNumber,   // 현재 페이지 번호
+            Integer pageSize      // 페이지 크기
+    ){}
 }

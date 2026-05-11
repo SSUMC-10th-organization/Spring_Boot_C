@@ -1,8 +1,10 @@
 package com.example.umc10th.domain.mission.converter;
 
+import com.example.umc10th.domain.mission.dto.MissionReqDTO;
 import com.example.umc10th.domain.mission.dto.MissionResDTO;
 import com.example.umc10th.domain.mission.entity.Mission;
 import com.example.umc10th.domain.mission.entity.mapping.MemberMission;
+import com.example.umc10th.domain.store.entity.Store;
 import org.springframework.data.domain.Page;
 
 import java.time.LocalDate;
@@ -18,7 +20,7 @@ public class MissionConverter {
                 .missionId(mm.getMission().getId())
                 .storeName(mm.getMission().getStore().getName())
                 .targetPoint(mm.getMission().getPoint())
-                .condition(mm.getMission().getCondition())
+                .conditional(mm.getMission().getConditional())
                 .status(mm.getIsCompleted())
                 .build();
     }
@@ -41,7 +43,7 @@ public class MissionConverter {
                 .missionId(m.getId())
                 .storeName(m.getStore().getName())
                 .point(m.getPoint())
-                .condition(m.getCondition())
+                .conditional(m.getConditional())
                 .deadline((int) ChronoUnit.DAYS.between(LocalDate.now(), m.getDeadline()))
                 .build();
     }
@@ -58,6 +60,41 @@ public class MissionConverter {
                 .totalElements(page.getTotalElements())
                 .isFirst(page.isFirst())
                 .isLast(page.isLast())
+                .build();
+    }
+
+    // DTO → 엔티티 변환 (가게 미션 생성)
+    public static Mission toMission(
+            Store store,
+            MissionReqDTO.CreateMission dto
+    ) {
+        return Mission.builder()
+                .store(store)
+                .conditional(dto.conditional())
+                .point(dto.point())
+                .deadline(dto.deadline())
+                .build();
+    }
+
+    // 엔티티 → 응답 DTO 변환 (미션 조회)
+    public static MissionResDTO.GetMission toGetMission(Mission mission) {
+        return MissionResDTO.GetMission.builder()
+                .conditional(mission.getConditional())
+                .point(mission.getPoint())
+                .missionId(mission.getId())
+                .build();
+    }
+
+    // 페이지네이션 변환 메서드
+    public static <T> MissionResDTO.Pagination<T> toPagination(
+            List<T> data,
+            Integer pageNumber,
+            Integer pageSize
+    ) {
+        return MissionResDTO.Pagination.<T>builder()
+                .data(data)
+                .pageNumber(pageNumber)
+                .pageSize(pageSize)
                 .build();
     }
 }

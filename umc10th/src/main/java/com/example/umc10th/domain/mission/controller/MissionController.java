@@ -6,8 +6,11 @@ import com.example.umc10th.domain.mission.enums.MissionStatus;
 import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
+import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,7 +34,7 @@ public class MissionController {
         );
     }
 
-    // 미션 목록 조회 (진행중 / 진행완료)
+    // 내 미션 목록 조회 (진행중 / 진행완료)
     // GET /members/me/missions?status=IN_PROGRESS
     // GET /members/me/missions?status=COMPLETED
     @GetMapping

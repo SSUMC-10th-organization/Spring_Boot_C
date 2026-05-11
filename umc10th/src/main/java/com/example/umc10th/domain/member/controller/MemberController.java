@@ -22,12 +22,12 @@ public class MemberController {
     @Operation(summary = "마이페이지 정보 조회") // SwaggerUI에 /me 옆에 마이페이지 정보조회라고 뜸(프론트를 위해)
     @GetMapping("/me")
     public ApiResponse<MemberResDTO.MyPageInfo> getMyPage(
-            @RequestBody MemberReqDTO.GetMyPage dto // Json->DTO 자동변환
+            @RequestParam Long memberId
     ) {
         // 리턴에서 서비스 호출 + 응답을 포장
         return ApiResponse.onSuccess(
                 MemberSuccessCode.MEMBER_INFO_OK,
-                memberService.getMyPage(dto)
+                memberService.getMyPage(memberId)
         );
     }
 

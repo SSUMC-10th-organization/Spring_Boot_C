@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "member_favorite_food")
-public class MemberFood {
+public class    MemberFood {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

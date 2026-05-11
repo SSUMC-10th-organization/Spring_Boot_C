@@ -1,7 +1,6 @@
 package com.example.umc10th.domain.member.service;
 
 import com.example.umc10th.domain.member.converter.MemberConverter;
-import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.exception.MemberException;
@@ -22,11 +21,8 @@ public class MemberService {
     private final MemberRepository memberRepository;
 
     // 마이페이지 조회
-    public MemberResDTO.MyPageInfo getMyPage(
-            MemberReqDTO.GetMyPage dto // 요청에서 받은 DTO
-    ) {
-        // 요청 DTO에서 유저 ID 추출
-        Long memberId = dto.id();
+    public MemberResDTO.MyPageInfo getMyPage(Long memberId){
+
         // DB에서 해당 유저 ID로 데이터 조회
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));

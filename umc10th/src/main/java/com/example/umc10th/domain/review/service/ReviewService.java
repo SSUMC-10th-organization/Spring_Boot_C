@@ -25,6 +25,7 @@ public class ReviewService {
     private final MemberRepository memberRepository; // reviewRepository → 최종적으로 리뷰를 저장
 
 
+    // 리뷰작성
     //DB 작업 중 에러가 나면 전체를 되돌려주는(rollback) 역할
     @Transactional
     public ReviewResDTO.CreateReviewDTO createReview(Long storeId, Long memberId, ReviewReqDTO.CreateReviewDTO request) {
@@ -37,6 +38,7 @@ public class ReviewService {
 
         // 컨버터에게 위임
         Review review = ReviewConverter.toReview(request, store, member);
+        // db에 저장을 한다.
         Review saved = reviewRepository.save(review);
 
         return ReviewConverter.toCreateReviewDTO(saved);
