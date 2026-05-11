@@ -143,7 +143,7 @@ public class MissionService {
 //        );
 //    }
 
-    // 2) 커서기반
+    // 2) 커서기반 (7주차 미션2)
     public MissionResDTO.Pagination<MissionResDTO.GetMission> getMissions(
             Long storeId, Integer pageSize, String cursor, String query
     ) {

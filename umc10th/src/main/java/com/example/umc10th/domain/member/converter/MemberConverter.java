@@ -4,6 +4,7 @@ import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.review.entity.Review;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Slice;
 
 import java.util.List;
 
@@ -48,6 +49,22 @@ public class MemberConverter {
                 .totalElements(reviewPage.getTotalElements())
                 .isFirst(reviewPage.isFirst())
                 .isLast(reviewPage.isLast())
+                .build();
+    }
+
+    // 7주차_미션2- 커서 기반 페이지네이션 변환
+    public static MemberResDTO.MyPageReviewCursorList toReviewCursorList(
+            Slice<Review> reviewSlice, String nextCursor
+    ) {
+        List<MemberResDTO.MyPageReview> reviewList = reviewSlice.getContent().stream()
+                .map(MemberConverter::toReviewPreview)
+                .toList();
+
+        return MemberResDTO.MyPageReviewCursorList.builder()
+                .reviewList(reviewList)
+                .hasNext(reviewSlice.hasNext())
+                .nextCursor(nextCursor)
+                .pageSize(reviewSlice.getSize())
                 .build();
     }
 }

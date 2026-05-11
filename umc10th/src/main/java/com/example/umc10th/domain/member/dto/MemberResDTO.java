@@ -12,7 +12,7 @@ public class MemberResDTO {
             Long memberId
     ) {}
 
-    //DTO 안에 inner class 이름은 DTO 접미사 안붙이는 일반적이다.
+    // DTO 안에 inner class 이름은 DTO 접미사 안붙이는 일반적이다.
     // 마이페이지 -회원정보
     @Builder
     public record MyPageInfo(
@@ -41,5 +41,14 @@ public class MemberResDTO {
             Long totalElements,
             Boolean isFirst,
             Boolean isLast
+    ) {}
+
+    // 6주차_미션2 - 커서 기반 페이지네이션 응답
+    @Builder
+    public record MyPageReviewCursorList(
+            List<MyPageReview> reviewList,
+            Boolean hasNext,
+            String nextCursor,
+            Integer pageSize
     ) {}
 }
