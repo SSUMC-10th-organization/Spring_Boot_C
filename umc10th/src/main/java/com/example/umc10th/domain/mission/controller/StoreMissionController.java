@@ -6,6 +6,7 @@ import com.example.umc10th.domain.mission.exception.code.MissionSuccessCode;
 import com.example.umc10th.domain.mission.service.MissionService;
 import com.example.umc10th.global.apiPayload.ApiResponse;
 import com.example.umc10th.global.apiPayload.code.BaseSuccessCode;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class StoreMissionController {
     @PostMapping("/{storeId}/missions")
     public ApiResponse<Void> createMission(
             @PathVariable Long storeId,
-            @RequestBody MissionReqDTO.CreateMission dto
+            @RequestBody @Valid MissionReqDTO.CreateMission dto
     ){
         BaseSuccessCode code = MissionSuccessCode.CREATED;
         return ApiResponse.onSuccess(code, missionService.createMission(storeId, dto));
@@ -31,16 +32,30 @@ public class StoreMissionController {
 
     // 가게 내 미션들 조회
     // GET /api/v1/stores/{storeId}/missions
+
+    //1) 오프셋 페이지기반 일때
+//    @GetMapping("/{storeId}/missions")
+//    //public ApiResponse<List<MissionResDTO.GetMission>> getStoreMissions(
+//    public ApiResponse<MissionResDTO.Pagination<MissionResDTO.GetMission>> getStoreMissions(
+//            @PathVariable Long storeId,
+//            // 페이지네이션
+//            @RequestParam Integer pageSize,
+//            @RequestParam Integer pageNumber,
+//            @RequestParam(required = false) String sort   // 필수 아님
+//    ){
+//        BaseSuccessCode code = MissionSuccessCode.OK;
+//        return ApiResponse.onSuccess(code, missionService.getMissions(storeId, pageSize, pageNumber, sort));
+//    }
+    //2) 커서기반
     @GetMapping("/{storeId}/missions")
-    //public ApiResponse<List<MissionResDTO.GetMission>> getStoreMissions(
     public ApiResponse<MissionResDTO.Pagination<MissionResDTO.GetMission>> getStoreMissions(
             @PathVariable Long storeId,
-            // 페이지네이션
             @RequestParam Integer pageSize,
-            @RequestParam Integer pageNumber,
-            @RequestParam(required = false) String sort   // 필수 아님
+            @RequestParam String cursor,   // 현재 커서 (없으면 "-1")
+            @RequestParam String query     // 정렬 기준 (현재는 "id"만 가능)
     ){
         BaseSuccessCode code = MissionSuccessCode.OK;
-        return ApiResponse.onSuccess(code, missionService.getMissions(storeId, pageSize, pageNumber, sort));
+        return ApiResponse.onSuccess(code,
+                missionService.getMissions(storeId, pageSize, cursor, query));
     }
 }

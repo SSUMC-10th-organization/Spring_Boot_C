@@ -50,7 +50,7 @@ public class MissionResDTO {
             Boolean isLast
     ) {}
 
-    // 가게 미션조회
+    // 가게 내 미션조회
     @Builder
     public record GetMission(
             Long missionId,
@@ -59,10 +59,20 @@ public class MissionResDTO {
     ){}
 
     // 페이지네이션 틀 — 제네릭으로 어떤 타입이든 담을 수 있음
+//    // 1) 오프셋기반일때
+//    @Builder
+//    public record Pagination<T>(
+//            List<T> data,         // 실제 데이터
+//            Integer pageNumber,   // 현재 페이지 번호
+//            Integer pageSize      // 페이지 크기
+//    ){}
+
+    // 2) 커서용
     @Builder
     public record Pagination<T>(
-            List<T> data,         // 실제 데이터
-            Integer pageNumber,   // 현재 페이지 번호
-            Integer pageSize      // 페이지 크기
+            List<T> data,          // 실제 데이터
+            Boolean hasNext,       // 다음 데이터 존재 여부
+            String nextCursor,     // 다음 요청에 사용할 커서
+            Integer pageSize       // 페이지 크기
     ){}
 }

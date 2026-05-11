@@ -86,14 +86,31 @@ public class MissionConverter {
     }
 
     // 페이지네이션 변환 메서드
+    // 1) 오프셋기반
+//    public static <T> MissionResDTO.Pagination<T> toPagination(
+//            List<T> data,
+//            Integer pageNumber,
+//            Integer pageSize
+//    ) {
+//        return MissionResDTO.Pagination.<T>builder()
+//                .data(data)
+//                .pageNumber(pageNumber)
+//                .pageSize(pageSize)
+//                .build();
+//    }
+
+    // 2) 커서기반
+    // 페이지네이션 틀 생성 (커서용)
     public static <T> MissionResDTO.Pagination<T> toPagination(
             List<T> data,
-            Integer pageNumber,
+            Boolean hasNext,
+            String nextCursor,
             Integer pageSize
-    ) {
+    ){
         return MissionResDTO.Pagination.<T>builder()
                 .data(data)
-                .pageNumber(pageNumber)
+                .hasNext(hasNext)
+                .nextCursor(nextCursor)
                 .pageSize(pageSize)
                 .build();
     }
