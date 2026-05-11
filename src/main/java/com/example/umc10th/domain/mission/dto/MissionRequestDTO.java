@@ -10,4 +10,10 @@ public class MissionRequestDTO {
         private String proofImage;
         private String memo;
     }
+
+    // 7주차 미션 1번을 위해 추가된 코드 (Request Body로 userId 받기)
+    @Getter
+    public static class GetInprogressMissionReq {
+        private Long userId;
+    }
 }

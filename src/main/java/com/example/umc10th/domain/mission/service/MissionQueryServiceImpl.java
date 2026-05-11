@@ -19,6 +19,7 @@ public class MissionQueryServiceImpl implements MissionQueryService {
     private final UserRepository userRepository;
     private final UserMissionRepository userMissionRepository;
 
+    // 원래 있던 코드 (그대로 유지)
     @Override
     public Page<UserMission> getMyMissions(Long userId, MissionStatus status, Integer page) {
         // 1. 유저 확인
@@ -27,5 +28,16 @@ public class MissionQueryServiceImpl implements MissionQueryService {
 
         // 2. 유저와 상태를 기준으로 10개씩 페이징하여 조회
         return userMissionRepository.findAllByUserAndStatus(user, status, PageRequest.of(page - 1, 10));
+    }
+
+    // 7주차 [미션 1번]을 위해 추가된 코드 (오프셋 페이징, size 파라미터 적용)
+    @Override
+    public Page<UserMission> getInprogressMissions(Long userId, Integer page, Integer size) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+
+        PageRequest pageRequest = PageRequest.of(page - 1, size); // JPA Page는 0부터 시작
+
+        return userMissionRepository.findAllByUserAndStatus(user, MissionStatus.IN_PROGRESS, pageRequest);
     }
 }

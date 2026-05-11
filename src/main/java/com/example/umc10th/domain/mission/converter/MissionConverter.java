@@ -1,7 +1,11 @@
 package com.example.umc10th.domain.mission.converter;
 
 import com.example.umc10th.domain.mission.dto.MissionResponseDTO;
+import com.example.umc10th.domain.mission.entity.mapping.UserMission;
+import org.springframework.data.domain.Page;
+
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class MissionConverter {
 
@@ -31,6 +35,31 @@ public class MissionConverter {
                 .missionId(missionId)
                 .status("COMPLETED")
                 .memo(memo)
+                .build();
+    }
+
+    // 7주차 미션 1번을 위해 추가된 컨버터
+    public static MissionResponseDTO.UserMissionDTO toUserMissionDTO(UserMission userMission) {
+        return MissionResponseDTO.UserMissionDTO.builder()
+                .missionId(userMission.getMission().getId())
+                .storeName(userMission.getMission().getStore().getName())
+                .rewardPoint(userMission.getMission().getRewardPoint())
+                .content(userMission.getMission().getContent())
+                .build();
+    }
+
+    public static MissionResponseDTO.UserMissionListDTO toUserMissionListDTO(Page<UserMission> userMissionPage) {
+        List<MissionResponseDTO.UserMissionDTO> missionDTOList = userMissionPage.stream()
+                .map(MissionConverter::toUserMissionDTO)
+                .collect(Collectors.toList());
+
+        return MissionResponseDTO.UserMissionListDTO.builder()
+                .isLast(userMissionPage.isLast())
+                .isFirst(userMissionPage.isFirst())
+                .totalPage(userMissionPage.getTotalPages())
+                .totalElements(userMissionPage.getTotalElements())
+                .listSize(missionDTOList.size())
+                .missionList(missionDTOList)
                 .build();
     }
 }
