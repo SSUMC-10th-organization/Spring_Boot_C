@@ -18,5 +18,6 @@ public class Location extends BaseEntity {
     private Long id;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Address name;
 }
