@@ -60,4 +60,26 @@ public class ReviewService {
         reviewFeedbackRepository.save(feedback);
         return ReviewConverter.toAddFeedbackResult(feedback);
     }
+
+    public ReviewResponseDto.MyReviewListResult getMyReviews(Long userId, Long lastId, Integer lastStar, String sortBy) {
+        if (!userRepository.existsById(userId)) {
+            throw new GeneralException(GeneralErrorCode.USER_NOT_FOUND);
+        }
+        Slice<Review> slice;
+        if ("star".equals(sortBy)) {
+            if (lastStar != null && lastId != null) {
+                slice = reviewRepository.findAllByUserIdOrderByStarWithCursor(userId, lastStar, lastId, PageRequest.of(0, 10));
+            } else {
+                slice = reviewRepository.findAllByUserIdOrderByStar(userId, PageRequest.of(0, 10));
+            }
+        } else {
+            PageRequest pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
+            if (lastId != null) {
+                slice = reviewRepository.findAllByUser_IdAndIdLessThan(userId, lastId, pageable);
+            } else {
+                slice = reviewRepository.findAllByUser_Id(userId, pageable);
+            }
+        }
+        return ReviewConverter.toMyReviewListResult(slice);
+    }
 }

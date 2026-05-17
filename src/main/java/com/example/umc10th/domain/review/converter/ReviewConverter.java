@@ -57,4 +57,28 @@ public class ReviewConverter {
     public static ReviewResponseDto.AddFeedbackResult toAddFeedbackResult(ReviewFeedback feedback) {
         return new ReviewResponseDto.AddFeedbackResult(feedback.getId());
     }
+
+    public static ReviewResponseDto.MyReviewItem toMyReviewItem(Review review) {
+        return new ReviewResponseDto.MyReviewItem(
+                review.getId(),
+                review.getStore().getName(),
+                review.getStar(),
+                review.getContent(),
+                review.getCreatedAt()
+        );
+    }
+
+    public static ReviewResponseDto.MyReviewListResult toMyReviewListResult(Slice<Review> slice) {
+        List<ReviewResponseDto.MyReviewItem> items = slice.getContent().stream()
+                .map(ReviewConverter::toMyReviewItem)
+                .toList();
+        Long nextCursorId = null;
+        Integer nextCursorStar = null;
+        if (slice.hasNext() && !slice.getContent().isEmpty()) {
+            Review last = slice.getContent().get(slice.getContent().size() - 1);
+            nextCursorId = last.getId();
+            nextCursorStar = last.getStar();
+        }
+        return new ReviewResponseDto.MyReviewListResult(items, slice.hasNext(), nextCursorId, nextCursorStar);
+    }
 }
