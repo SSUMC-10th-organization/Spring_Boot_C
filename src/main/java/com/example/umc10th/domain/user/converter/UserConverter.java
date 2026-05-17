@@ -9,8 +9,10 @@ import java.util.List;
 
 public class UserConverter {
 
-    public static User toUser(UserRequestDto.SignUp request) {
+    public static User toUser(UserRequestDto.SignUp request, String encodedPassword) {
         return User.builder()
+                .email(request.email())
+                .password(encodedPassword)
                 .name(request.name())
                 .gender(request.gender())
                 .birthday(request.birthDate())
