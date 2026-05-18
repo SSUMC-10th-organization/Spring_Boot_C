@@ -50,4 +50,29 @@ public class MissionResponseDTO {
         private String status;
         private String memo;
     }
+
+    // 7주차 미션 1번을 위해 추가된 응답 DTO
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserMissionDTO {
+        private Long missionId;
+        private String storeName;
+        private Integer rewardPoint;
+        private String content;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class UserMissionListDTO {
+        private List<UserMissionDTO> missionList;
+        private Integer listSize;
+        private Integer totalPage;
+        private Long totalElements;
+        private Boolean isFirst;
+        private Boolean isLast;
+    }
 }

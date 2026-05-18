@@ -12,23 +12,31 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequiredArgsConstructor // 추가: 서비스 주입
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/missions")
 public class MissionController {
 
-    private final MissionQueryService missionQueryService; // 추가: 아까 만든 서비스!
+    private final MissionQueryService missionQueryService;
 
+    // 7주차 [미션 1번] 오프셋 기반 페이징 + RequestBody로 userId 받기 (요구사항)
+    @GetMapping("/users/in-progress")
+    public ApiResponse<MissionResponseDTO.UserMissionListDTO> getInprogressMissions(
+            @RequestBody MissionRequestDTO.GetInprogressMissionReq request,
+            @RequestParam(name = "page", defaultValue = "1") Integer page,
+            @RequestParam(name = "size", defaultValue = "10") Integer size) {
+
+        Page<UserMission> userMissionPage = missionQueryService.getInprogressMissions(request.getUserId(), page, size);
+        return ApiResponse.onSuccess(MissionConverter.toUserMissionListDTO(userMissionPage));
+    }
+
+    // 아래는 전부 기존 코드 유지
     @GetMapping
     public ApiResponse<MissionResponseDTO.MissionListResultDTO> getMissions(
-            @RequestParam MissionStatus status, // String 대신 Enum으로 받으면 에러 방지에 좋습니다!
+            @RequestParam MissionStatus status,
             @RequestParam(defaultValue = "1") Integer page,
             @RequestParam(defaultValue = "10") Integer size
     ) {
-        // 1. 서비스 호출: 아직 로그인이 없으므로 임시로 1번 유저(1L)라고 가정합니다.
         Page<UserMission> missionPage = missionQueryService.getMyMissions(1L, status, page);
-
-        // (추후 과제) missionPage 객체의 데이터를 Converter를 통해 DTO로 바꾸는 작업이 필요합니다.
-        // 현재는 기존 코드의 응답 포맷을 유지해둡니다!
         return ApiResponse.onSuccess(MissionConverter.toMissionListResultDTO(page, size));
     }
 
