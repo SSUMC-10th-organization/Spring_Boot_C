@@ -1,7 +1,10 @@
 package com.example.umc10th.domain.member.converter;
 
+import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.entity.Member;
+import com.example.umc10th.domain.member.enums.SocialType;
+import com.example.umc10th.domain.mission.enums.Address;
 
 public class MemberConverter {
 
@@ -20,4 +23,19 @@ public class MemberConverter {
                 .memberId(member.getId())
                 .build();
     }
+    public static Member toMember(MemberReqDTO.SignUpDTO request, String encodedPassword) {
+        return Member.builder()
+                .email(request.getEmail())
+                .password(encodedPassword)
+                .name(request.getName())
+                .gender(request.getGender())
+                .birth(request.getBirthDate())
+                .address(request.getAddress() != null ? Address.valueOf(request.getAddress()) : null)
+                .point(0)
+                .socialType(SocialType.LOCAL)
+                .build();
+    }
+
+
+
 }
