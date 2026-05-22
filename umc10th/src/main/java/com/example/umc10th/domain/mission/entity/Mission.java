@@ -30,8 +30,8 @@ public class Mission extends BaseEntity {
     private LocalDate deadline;
 
     // 미션 조건
-    @Column(name = "condition", nullable = false, columnDefinition = "TEXT")
-    private String condition;
+    @Column(name = "conditional", nullable = false, columnDefinition = "TEXT")
+    private String conditional  ;
 
     // 성공 포인트
     @Column(name = "point", nullable = false)

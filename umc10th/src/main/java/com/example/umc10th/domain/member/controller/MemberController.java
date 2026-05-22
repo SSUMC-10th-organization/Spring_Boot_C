@@ -22,26 +22,40 @@ public class MemberController {
     @Operation(summary = "마이페이지 정보 조회") // SwaggerUI에 /me 옆에 마이페이지 정보조회라고 뜸(프론트를 위해)
     @GetMapping("/me")
     public ApiResponse<MemberResDTO.MyPageInfo> getMyPage(
-            @RequestBody MemberReqDTO.GetMyPage dto // Json->DTO 자동변환
+            @RequestParam Long memberId
     ) {
         // 리턴에서 서비스 호출 + 응답을 포장
         return ApiResponse.onSuccess(
                 MemberSuccessCode.MEMBER_INFO_OK,
-                memberService.getMyPage(dto)
+                memberService.getMyPage(memberId)
         );
     }
 
     // 마이페이지 - 작성한 리뷰 페이징 조회
-    @Operation(summary = "내가 작성한 리뷰 페이징 조회")
-    @GetMapping("/{memberId}/reviews")
-    public ApiResponse<MemberResDTO.MyPageReviewList> getMyReviews(
+    // 1) 오프셋기반
+//    @Operation(summary = "내가 작성한 리뷰 페이징 조회")
+//    @GetMapping("/{memberId}/reviews")
+//    public ApiResponse<MemberResDTO.MyPageReviewList> getMyReviews(
+//            @PathVariable Long memberId,
+//            @RequestParam(defaultValue = "0") Integer page,
+//            @RequestParam(defaultValue = "10") Integer size
+//    ) {
+//        return ApiResponse.onSuccess(
+//                MemberSuccessCode.MEMBER_REVIEW_OK,
+//                memberService.getMyReviews(memberId, page, size)
+//        );
+//    }
+    @Operation(summary = "내가 작성한 리뷰 커서 페이징 조회 (id순 / 별점순)")
+    @GetMapping("/{memberId}/reviews/cursor")
+    public ApiResponse<MemberResDTO.MyPageReviewCursorList> getMyReviewsByCursor(
             @PathVariable Long memberId,
-            @RequestParam(defaultValue = "0") Integer page,
-            @RequestParam(defaultValue = "10") Integer size
+            @RequestParam(defaultValue = "10") Integer pageSize,
+            @RequestParam(defaultValue = "-1") String cursor,
+            @RequestParam(defaultValue = "id") String query
     ) {
         return ApiResponse.onSuccess(
                 MemberSuccessCode.MEMBER_REVIEW_OK,
-                memberService.getMyReviews(memberId, page, size)
+                memberService.getMyReviewsByCursor(memberId, pageSize, cursor, query)
         );
     }
 }
