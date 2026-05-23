@@ -26,8 +26,11 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
+    // 컨트롤러에서 넘어온 request 객체에서 시작
     public MemberResDTO.SignUpDTO signUp(MemberReqDTO.SignUpDTO request) {
         // 1. Member 저장
+        // requset를 넘기면 컨버터안에서 request.getXXX() 이런거로 필요한 값 꺼내
+        // Member.builder()로 새 객체를 만든다.
         Member member = MemberConverter.toMember(request, passwordEncoder);
         Member savedMember = memberRepository.save(member);
 
