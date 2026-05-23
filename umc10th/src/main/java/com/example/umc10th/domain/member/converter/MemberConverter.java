@@ -1,14 +1,67 @@
 package com.example.umc10th.domain.member.converter;
 
+import com.example.umc10th.domain.member.dto.MemberReqDTO;
 import com.example.umc10th.domain.member.dto.MemberResDTO;
+import com.example.umc10th.domain.member.entity.Food;
 import com.example.umc10th.domain.member.entity.Member;
+import com.example.umc10th.domain.member.entity.Term;
+import com.example.umc10th.domain.member.entity.mapping.MemberFood;
+import com.example.umc10th.domain.member.entity.mapping.MemberTerm;
+import com.example.umc10th.domain.member.enums.Sex;
+import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.domain.review.entity.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.time.LocalDate;
 import java.util.List;
 
 public class MemberConverter {
+
+
+    // 회원가입 요청DTO -> Member 엔티티
+    public static Member toMember(MemberReqDTO.SignUpDTO request, PasswordEncoder passwordEncoder) {
+        return Member.builder()
+                .name(request.getName())
+                .nickname(request.getName())
+                .email(request.getEmail())
+                .password(passwordEncoder.encode(request.getPassword()))
+                .sex(request.getSex())
+                .birth(LocalDate.parse(request.getBirth()))
+                .address(request.getAddress())
+                .point(0)
+                .isLeft(false)
+                .socialUid("")
+                .socialType(SocialType.LOCAL)
+                .profileUrl("")
+                .build();
+    }
+
+
+    // DB에 저장된 엔터티-> 응답DTO
+    public static MemberResDTO.SignUpDTO toSignUpDTO(Member member) {
+        return MemberResDTO.SignUpDTO.builder()
+                .memberId(member.getId())
+                .email(member.getEmail())
+                .build();
+    }
+
+    // 회원가입 시 음식 저장
+    public static MemberFood toMemberFood(Member member, Food food) {
+        return MemberFood.builder()
+                .member(member)
+                .food(food)
+                .build();
+    }
+
+    // 회원가입 시 약관저장
+    public static MemberTerm toMemberTerm(Member member, Term term) {
+        return MemberTerm.builder()
+                .member(member)
+                .term(term)
+                .build();
+    }
 
     // 마이페이지 회원 정보
     public static MemberResDTO.MyPageInfo toMyPageInfo(Member member) {

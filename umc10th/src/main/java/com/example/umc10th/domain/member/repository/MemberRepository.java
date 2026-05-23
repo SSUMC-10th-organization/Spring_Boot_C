@@ -10,8 +10,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
+
+    // 회원가입 쿼리메서드 정의
+    Optional<Member> findByEmail(String email);
 
     // 특정 회원이 작성한 리뷰 페이징 조회
     @Query("SELECT r FROM Review r WHERE r.member.id = :memberId ORDER BY r.createdAt DESC")

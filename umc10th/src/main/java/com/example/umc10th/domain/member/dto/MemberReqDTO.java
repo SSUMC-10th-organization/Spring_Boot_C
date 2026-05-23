@@ -1,5 +1,7 @@
 package com.example.umc10th.domain.member.dto;
 
+import com.example.umc10th.domain.member.enums.FoodName;
+import com.example.umc10th.domain.member.enums.Sex;
 import lombok.Getter;
 import java.util.List;
 
@@ -9,11 +11,13 @@ public class MemberReqDTO {
     @Getter
     public static class SignUpDTO {
         String name;
-        String sex;
+        Sex sex;
         String birth;
         String address;
-        List<String> favoriteFoodTypes;
+        List<FoodName> favoriteFoodTypes;
         List<Long> agreeTermIds;
+        String email;
+        String password;
     }
 
     // 마이페이지 - 추가

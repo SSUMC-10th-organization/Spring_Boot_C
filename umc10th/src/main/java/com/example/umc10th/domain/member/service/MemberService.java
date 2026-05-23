@@ -6,6 +6,7 @@ import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.exception.MemberException;
 import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.MemberRepository;
+import com.example.umc10th.domain.member.repository.MemberTermRepository;
 import com.example.umc10th.domain.review.entity.Review;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
