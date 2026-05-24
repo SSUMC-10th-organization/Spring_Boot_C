@@ -31,7 +31,7 @@ public class SecurityConfig {
         http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(allowUris).permitAll()
+                        .requestMatchers(allowUris).permitAll() // 명시적으로 허용된 Uri들 빼고,
                         .anyRequest().authenticated()
                 )
                 .formLogin(form -> form
