@@ -2,6 +2,7 @@ package com.example.umc10th.domain.user.controller;
 
 import com.example.umc10th.domain.mission.dto.MissionResponseDto;
 import com.example.umc10th.domain.mission.enums.MissionStatus;
+import com.example.umc10th.domain.user.dto.AuthUser;
 import com.example.umc10th.domain.user.dto.UserRequestDto;
 import com.example.umc10th.domain.user.dto.UserResponseDto;
 import com.example.umc10th.domain.user.service.UserService;
@@ -10,6 +11,7 @@ import com.example.umc10th.global.apipayload.handler.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -21,22 +23,22 @@ public class UserController implements UserControllerDocs {
 
     @GetMapping("/missions")
     public ResponseEntity<ApiResponse<MissionResponseDto.MissionListResult>> getMissions(
-            @RequestHeader("X-User-Id") Long userId,
+            @AuthenticationPrincipal AuthUser authUser,
             @RequestParam(required = false) MissionStatus status,
             @RequestParam(defaultValue = "0") int page) {
-        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK, userService.getMyMissions(userId, status, page)));
+        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK, userService.getMyMissions(authUser.getUserId(), status, page)));
     }
 
     @PatchMapping("/mission/complete")
     public ResponseEntity<ApiResponse<UserResponseDto.CompleteMissionResult>> completeMission(
-            @RequestHeader("X-User-Id") Long userId,
+            @AuthenticationPrincipal AuthUser authUser,
             @Valid @RequestBody UserRequestDto.CompleteMission request) {
-        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK, userService.completeMission(userId, request)));
+        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK, userService.completeMission(authUser.getUserId(), request)));
     }
 
     @GetMapping("/profile")
     public ResponseEntity<ApiResponse<UserResponseDto.MyProfile>> getMyProfile(
-            @RequestHeader("X-User-Id") Long userId) {
-        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK, userService.getMyProfile(userId)));
+            @AuthenticationPrincipal AuthUser authUser) {
+        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK, userService.getMyProfile(authUser.getUserId())));
     }
 }

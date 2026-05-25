@@ -12,6 +12,13 @@ public class UserResponseDto {
     public record Result() {
     }
 
+    public record LoginResult(
+            String accessToken,
+            Long userId,
+            String name
+    ) {
+    }
+
     public record SignUpResult(
             Long userId,
             String name,

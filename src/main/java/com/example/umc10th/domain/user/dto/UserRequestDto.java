@@ -28,6 +28,12 @@ public class UserRequestDto {
     ) {
     }
 
+    public record Login(
+            @NotBlank @Email String email,
+            @NotBlank String password
+    ) {
+    }
+
     public record CompleteMission(
             @NotNull Long missionId
     ) {

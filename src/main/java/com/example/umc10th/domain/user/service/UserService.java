@@ -4,15 +4,17 @@ import com.example.umc10th.domain.mission.converter.MissionConverter;
 import com.example.umc10th.domain.mission.dto.MissionResponseDto;
 import com.example.umc10th.domain.mission.enums.MissionStatus;
 import com.example.umc10th.domain.user.converter.UserConverter;
+import com.example.umc10th.domain.user.dto.AuthUser;
 import com.example.umc10th.domain.user.dto.UserRequestDto;
 import com.example.umc10th.domain.user.dto.UserResponseDto;
 import com.example.umc10th.domain.user.entity.User;
 import com.example.umc10th.domain.user.entity.UserMission;
+import com.example.umc10th.domain.user.enums.UserErrorCode;
 import com.example.umc10th.domain.user.repository.UserMissionRepository;
 import com.example.umc10th.domain.user.repository.UserRepository;
-import com.example.umc10th.domain.user.enums.UserErrorCode;
 import com.example.umc10th.global.apipayload.code.GeneralErrorCode;
 import com.example.umc10th.global.apipayload.exception.GeneralException;
+import com.example.umc10th.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -30,6 +32,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final UserMissionRepository userMissionRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil;
 
     @Transactional
     public UserResponseDto.SignUpResult signUp(UserRequestDto.SignUp request) {
@@ -39,6 +42,17 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(request.password());
         User user = UserConverter.toUser(request, encodedPassword);
         return UserConverter.toSignUpResult(userRepository.save(user));
+    }
+
+    public UserResponseDto.LoginResult login(UserRequestDto.Login request) {
+        User user = userRepository.findByEmail(request.email())
+                .orElseThrow(() -> new GeneralException(UserErrorCode.INVALID_CREDENTIALS));
+        if (!passwordEncoder.matches(request.password(), user.getPassword())) {
+            throw new GeneralException(UserErrorCode.INVALID_CREDENTIALS);
+        }
+        AuthUser authUser = new AuthUser(user);
+        String accessToken = jwtUtil.createAccessToken(authUser);
+        return new UserResponseDto.LoginResult(accessToken, user.getId(), user.getName());
     }
 
     public MissionResponseDto.MissionListResult getMyMissions(Long userId, MissionStatus status, int page) {
