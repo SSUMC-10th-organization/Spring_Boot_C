@@ -13,6 +13,11 @@ public class MemberResDTO {
             String email
     ) {}
 
+    @Builder
+    public record Login(
+            String accessToken
+    ){}
+
     // DTO 안에 inner class 이름은 DTO 접미사 안붙이는 일반적이다.
     // 마이페이지 -회원정보
     @Builder

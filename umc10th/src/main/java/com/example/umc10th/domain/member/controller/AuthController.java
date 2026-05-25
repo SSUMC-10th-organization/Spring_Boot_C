@@ -22,4 +22,14 @@ public class AuthController {
         return ApiResponse.onSuccess(MemberSuccessCode.SIGN_UP_SUCCESS,
                 authService.signUp(request));
     }
+
+
+    // 로그인
+    @PostMapping("/login")
+    public ApiResponse<MemberResDTO.Login> login(
+            @RequestBody MemberReqDTO.Login request
+    ) {
+        return ApiResponse.onSuccess(MemberSuccessCode.LOGIN_SUCCESS,
+                authService.login(request));
+    }
 }

@@ -14,7 +14,7 @@ import java.util.Optional;
 
 public interface MemberRepository extends JpaRepository<Member, Long> {
 
-    // 회원가입 쿼리메서드 정의
+    // 회원가입 쿼리메서드 정의, 로그인
     Optional<Member> findByEmail(String email);
 
     // 특정 회원이 작성한 리뷰 페이징 조회
