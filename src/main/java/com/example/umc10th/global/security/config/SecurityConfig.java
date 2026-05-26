@@ -3,6 +3,8 @@ package com.example.umc10th.global.security.config;
 import com.example.umc10th.global.security.exception.CustomAccessDenied;
 import com.example.umc10th.global.security.exception.CustomEntryPoint;
 import com.example.umc10th.global.security.filter.JwtAuthFilter;
+import com.example.umc10th.global.security.handler.OAuthSuccessHandler;
+import com.example.umc10th.global.security.service.CustomOAuthService;
 import com.example.umc10th.global.security.service.CustomUserDetailsService;
 import com.example.umc10th.global.security.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,12 +27,14 @@ public class SecurityConfig {
 
     private final JwtUtil jwtUtil;
     private final CustomUserDetailsService customUserDetailsService;
+    private final CustomOAuthService customOAuthService;
 
     private final String[] allowUris = {
             "/swagger-ui/**",
             "/swagger-resources/**",
             "/v3/api-docs/**",
-            "/auth/**"
+            "/auth/**",
+            "/oauth/**"
     };
 
     @Bean
@@ -41,6 +45,11 @@ public class SecurityConfig {
     @Bean
     public JwtAuthFilter jwtAuthFilter() {
         return new JwtAuthFilter(jwtUtil, customUserDetailsService, objectMapper());
+    }
+
+    @Bean
+    public OAuthSuccessHandler oAuthSuccessHandler() {
+        return new OAuthSuccessHandler(jwtUtil, objectMapper());
     }
 
     @Bean
@@ -56,6 +65,18 @@ public class SecurityConfig {
                 )
                 .formLogin(AbstractHttpConfigurer::disable)
                 .logout(AbstractHttpConfigurer::disable)
+                .oauth2Login(oauth -> oauth
+                        .authorizationEndpoint(endpoint ->
+                                endpoint.baseUri("/oauth/authorize")
+                        )
+                        .redirectionEndpoint(endpoint ->
+                                endpoint.baseUri("/oauth/callback/**")
+                        )
+                        .userInfoEndpoint(userInfo -> userInfo
+                                .userService(customOAuthService)
+                        )
+                        .successHandler(oAuthSuccessHandler())
+                )
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler(new CustomAccessDenied(objectMapper()))
                         .authenticationEntryPoint(new CustomEntryPoint(objectMapper()))

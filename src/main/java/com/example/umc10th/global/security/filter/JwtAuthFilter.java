@@ -1,5 +1,6 @@
 package com.example.umc10th.global.security.filter;
 
+import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.global.security.service.CustomUserDetailsService;
 import com.example.umc10th.global.security.util.JwtUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -41,12 +42,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
             token = token.replace("Bearer ", "");
 
             if (jwtUtil.isValid(token)) {
-                String email = jwtUtil.getEmail(token);
-                UserDetails user = customUserDetailsService.loadUserByUsername(email);
+                String uid = jwtUtil.getUid(token);
+                SocialType socialType = jwtUtil.getSocialType(token);
+
+                UserDetails member = customUserDetailsService.loadUserByUidAndSocialType(socialType, uid);
                 Authentication auth = new UsernamePasswordAuthenticationToken(
-                        user,
+                        member,
                         null,
-                        user.getAuthorities()
+                        member.getAuthorities()
                 );
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }

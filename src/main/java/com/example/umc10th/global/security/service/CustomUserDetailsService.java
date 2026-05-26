@@ -1,5 +1,6 @@
 package com.example.umc10th.global.security.service;
 
+import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.domain.member.repository.MemberRepository;
 import com.example.umc10th.global.security.entity.AuthMember;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,12 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return memberRepository.findByEmail(username)
+                .map(AuthMember::new)
+                .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
+    }
+
+    public UserDetails loadUserByUidAndSocialType(SocialType socialType, String username) throws UsernameNotFoundException {
+        return memberRepository.findBySocialTypeAndSocialUid(socialType, username)
                 .map(AuthMember::new)
                 .orElseThrow(() -> new UsernameNotFoundException("사용자를 찾을 수 없습니다."));
     }

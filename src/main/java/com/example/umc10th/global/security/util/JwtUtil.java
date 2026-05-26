@@ -1,5 +1,6 @@
 package com.example.umc10th.global.security.util;
 
+import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.global.security.entity.AuthMember;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
@@ -35,9 +36,17 @@ public class JwtUtil {
         return createToken(member, accessExpiration);
     }
 
-    public String getEmail(String token) {
+    public String getUid(String token) {
         try {
             return getClaims(token).getPayload().getSubject();
+        } catch (JwtException e) {
+            return null;
+        }
+    }
+
+    public SocialType getSocialType(String token) {
+        try {
+            return SocialType.valueOf(getClaims(token).getPayload().get("social_type").toString().toUpperCase());
         } catch (JwtException e) {
             return null;
         }
@@ -61,7 +70,7 @@ public class JwtUtil {
         return Jwts.builder()
                 .subject(member.getUsername())
                 .claim("role", authorities)
-                .claim("email", member.getUsername())
+                .claim("social_type", member.getMember().getSocialType())
                 .issuedAt(Date.from(now))
                 .expiration(Date.from(now.plus(expiration)))
                 .signWith(secretKey)
