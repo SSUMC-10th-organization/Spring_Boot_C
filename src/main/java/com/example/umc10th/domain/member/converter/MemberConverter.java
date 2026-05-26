@@ -33,6 +33,7 @@ public class MemberConverter {
                 .address(request.getAddress() != null ? Address.valueOf(request.getAddress()) : null)
                 .point(0)
                 .socialType(SocialType.LOCAL)
+                .phoneNumber(request.getPhoneNumber())
                 .build();
     }
 

@@ -19,4 +19,10 @@ public class MemberReqDTO {
         String phoneNumber;
         List<String> favoriteFood;
     }
+
+    @Getter
+    public static class LoginDTO {
+        String email;
+        String password;
+    }
 }

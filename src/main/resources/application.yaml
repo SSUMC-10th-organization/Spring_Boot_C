@@ -21,3 +21,9 @@ spring:
   logging:
     level:
       root: DEBUG
+
+jwt:
+  token:
+    secretKey: ${JWT_SECRET_KEY}
+    expiration:
+      access: 1800000  # 30분

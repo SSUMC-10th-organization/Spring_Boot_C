@@ -18,4 +18,9 @@ public class MemberResDTO {
             Integer point
     ) {}
 
+    @Builder
+    public record LoginDTO(
+            String accessToken
+    ) {}
+
 }
