@@ -12,6 +12,7 @@ import com.example.umc10th.domain.member.exception.MemberException;
 import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.*;
 import com.example.umc10th.global.entity.AuthMember;
+import com.example.umc10th.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,7 @@ public class AuthService {
     private final MemberFoodRepository memberFoodRepository;
     private final MemberTermRepository memberTermRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil; // 이 줄 추가
 
     @Transactional
     // 컨트롤러에서 넘어온 request 객체에서 시작

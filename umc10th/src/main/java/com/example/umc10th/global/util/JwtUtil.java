@@ -1,6 +1,7 @@
 package com.example.umc10th.global.util;
 
 
+import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.global.entity.AuthMember;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
@@ -66,7 +67,27 @@ public class JwtUtil {
         }
     }
 
-    // 토큰 생성
+    // 토큰에서 UID 가져오기
+    public String getUid(String token) {
+        try {
+            return getClaims(token).getPayload().getSubject();
+        } catch (JwtException e) {
+            return null;
+        }
+    }
+
+    // 토큰에서 소셜 로그인 타입 가져오기
+    public SocialType getSocialType(String token) {
+        try {
+            return SocialType.valueOf(
+                    getClaims(token).getPayload().get("social_type").toString().toUpperCase()
+            );
+        } catch (JwtException e) {
+            return null;
+        }
+    }
+
+    // 토큰 생성 (createToken 교체)
     private String createToken(AuthMember member, Duration expiration) {
         Instant now = Instant.now();
 
@@ -76,14 +97,33 @@ public class JwtUtil {
                 .collect(Collectors.joining(","));
 
         return Jwts.builder()
-                .subject(member.getUsername()) // User 이메일을 Subject로
+                .subject(member.getUsername()) // User UID를 Subject로
                 .claim("role", authorities)
-                .claim("email", member.getUsername())
+                .claim("social_type", member.getMember().getSocialType())
                 .issuedAt(Date.from(now)) // 언제 발급한지
                 .expiration(Date.from(now.plus(expiration))) // 언제까지 유효한지
                 .signWith(secretKey) // sign할 Key
                 .compact();
     }
+
+//    // 토큰 생성
+//    private String createToken(AuthMember member, Duration expiration) {
+//        Instant now = Instant.now();
+//
+//        // 인가 정보
+//        String authorities = member.getAuthorities().stream()
+//                .map(GrantedAuthority::getAuthority)
+//                .collect(Collectors.joining(","));
+//
+//        return Jwts.builder()
+//                .subject(member.getUsername()) // User 이메일을 Subject로
+//                .claim("role", authorities)
+//                .claim("email", member.getUsername())
+//                .issuedAt(Date.from(now)) // 언제 발급한지
+//                .expiration(Date.from(now.plus(expiration))) // 언제까지 유효한지
+//                .signWith(secretKey) // sign할 Key
+//                .compact();
+//    }
 
     // 토큰 정보 가져오기
     private Jws<Claims> getClaims(String token) throws JwtException {

@@ -1,6 +1,7 @@
 package com.example.umc10th.domain.member.repository;
 
 import com.example.umc10th.domain.member.entity.Member;
+import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.domain.review.entity.Review;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,6 +17,9 @@ public interface MemberRepository extends JpaRepository<Member, Long> {
 
     // 회원가입 쿼리메서드 정의, 로그인
     Optional<Member> findByEmail(String email);
+
+    // 로그인
+    Optional<Member> findBySocialTypeAndSocialUid(SocialType socialType, String socialUid);
 
     // 특정 회원이 작성한 리뷰 페이징 조회
     @Query("SELECT r FROM Review r WHERE r.member.id = :memberId ORDER BY r.createdAt DESC")

@@ -10,6 +10,7 @@ import com.example.umc10th.domain.member.entity.mapping.MemberTerm;
 import com.example.umc10th.domain.member.enums.Sex;
 import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.domain.review.entity.Review;
+import com.example.umc10th.global.security.dto.OAuthDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Slice;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,6 +39,24 @@ public class MemberConverter {
                 .build();
     }
 
+    // OAuth 로그인 시 Member 저장(오버로드)
+    public static Member toMember(OAuthDTO dto) {
+        return Member.builder()
+                .name(dto.getName())
+                .nickname(dto.getName())
+                .email(dto.getSocialEmail())
+                .password(null)
+                .sex(Sex.NONE)          // 소셜 로그인은 성별 정보 없으므로 기본값
+                .birth(LocalDate.of(2000, 1, 1))  // 생년월일도 기본값
+                .address("")
+                .point(0)
+                .isLeft(false)
+                .socialUid(dto.getSocialUid())
+                .socialType(dto.getSocialType())
+                .profileUrl("")
+                .build();
+    }
+
 
     // DB에 저장된 엔터티-> 응답DTO
     public static MemberResDTO.SignUpDTO toSignUpDTO(Member member) {
@@ -60,6 +79,13 @@ public class MemberConverter {
         return MemberTerm.builder()
                 .member(member)
                 .term(term)
+                .build();
+    }
+
+    // 로그인 응답객체
+    public static MemberResDTO.Login toLogin(String accessToken) {
+        return MemberResDTO.Login.builder()
+                .accessToken(accessToken)
                 .build();
     }
 
@@ -120,4 +146,6 @@ public class MemberConverter {
                 .pageSize(reviewSlice.getSize())
                 .build();
     }
+
+
 }
