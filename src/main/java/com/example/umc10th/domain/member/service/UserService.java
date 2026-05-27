@@ -5,6 +5,7 @@ import com.example.umc10th.domain.member.dto.UserRequestDTO;
 import com.example.umc10th.domain.member.dto.UserResponseDTO;
 import com.example.umc10th.domain.member.entity.User;
 import com.example.umc10th.domain.member.repository.UserRepository;
+import com.example.umc10th.global.jwt.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -17,19 +18,42 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @Transactional
     public UserResponseDTO.SignupResultDTO joinUser(UserRequestDTO.SignupDTO request) {
-        // 1. 비밀번호 암호화 (BCrypt)
+
+        if (userRepository.existsByEmail(request.getEmail())) {
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
+        }
+
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
-        // 2. DTO -> Entity 변환 (이전에 만든 컨버터 사용)
         User newUser = UserConverter.toUser(request, encodedPassword);
-
-        // 3. DB에 저장
         User savedUser = userRepository.save(newUser);
 
-        // 4. 저장된 Entity를 다시 응답 DTO로 변환하여 반환
-        return UserConverter.toSignupResultDTO(savedUser.getId(), savedUser.getEmail(), savedUser.getName());
+        return UserConverter.toSignupResultDTO(
+                savedUser.getId(),
+                savedUser.getEmail(),
+                savedUser.getName()
+        );
+    }
+
+    public UserResponseDTO.LoginResultDTO login(UserRequestDTO.LoginDTO request) {
+
+        User user = userRepository.findByEmail(request.getEmail())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 이메일입니다."));
+
+        if (!passwordEncoder.matches(request.getPassword(), user.getPassword())) {
+            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        }
+
+        String accessToken = jwtTokenProvider.createAccessToken(user.getId(), user.getEmail());
+
+        return UserConverter.toLoginResultDTO(accessToken);
+    }
+
+    public UserResponseDTO.MyPageResultDTO getMyPage(User user) {
+        return UserConverter.toMyPageResultDTO(user);
     }
 }

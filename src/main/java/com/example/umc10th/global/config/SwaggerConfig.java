@@ -14,17 +14,21 @@ public class SwaggerConfig {
 
     @Bean
     public OpenAPI swagger() {
-        Info info = new Info().title("UMC10th").description("10기 Swagger").version("0.0.1");
+        String securitySchemeName = "bearerAuth";
 
-        // JWT 토큰 헤더 방식
-        String securityScheme = "JWT TOKEN";
-        SecurityRequirement securityRequirement = new SecurityRequirement().addList(securityScheme);
+        Info info = new Info()
+                .title("UMC10th")
+                .description("JWT 회원가입 / 로그인 / 마이페이지 API")
+                .version("0.0.1");
+
+        SecurityRequirement securityRequirement = new SecurityRequirement()
+                .addList(securitySchemeName);
 
         Components components = new Components()
-                .addSecuritySchemes(securityScheme, new SecurityScheme()
-                        .name(securityScheme)
+                .addSecuritySchemes(securitySchemeName, new SecurityScheme()
+                        .name(securitySchemeName)
                         .type(SecurityScheme.Type.HTTP)
-                        .scheme("Bearer")
+                        .scheme("bearer")
                         .bearerFormat("JWT"));
 
         return new OpenAPI()
