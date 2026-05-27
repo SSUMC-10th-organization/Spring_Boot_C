@@ -1,0 +1,32 @@
+package com.example.umc10th.global.config;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.example.umc10th.global.apiPayload.ApiResponse;
+import com.example.umc10th.global.apiPayload.code.GeneralErrorCode;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.web.AuthenticationEntryPoint;
+import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+
+@Component
+public class CustomAuthenticationEntryPoint implements AuthenticationEntryPoint {
+
+    @Override
+    public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        GeneralErrorCode code = GeneralErrorCode.UNAUTHORIZED;
+
+        response.setContentType("application/json;charset=UTF-8");
+        // GeneralErrorCode의 getStatus()를 사용하여 상태코드 세팅
+        response.setStatus(code.getStatus().value());
+
+        // ApiResponse.onFailure(BaseErrorCode, T result) 에 맞게 전달
+        ApiResponse<Object> errorResponse = ApiResponse.onFailure(code, null);
+
+        objectMapper.writeValue(response.getOutputStream(), errorResponse);
+    }
+}
