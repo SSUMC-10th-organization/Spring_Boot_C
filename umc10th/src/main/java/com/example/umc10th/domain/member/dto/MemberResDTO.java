@@ -13,6 +13,16 @@ public class MemberResDTO {
             String email
     ) {}
 
+//    @Builder
+//    public record Login(
+//            String accessToken
+//    ){}
+    @Builder
+    @Getter
+    public static class Login {
+        private String accessToken;
+    }
+
     // DTO 안에 inner class 이름은 DTO 접미사 안붙이는 일반적이다.
     // 마이페이지 -회원정보
     @Builder
@@ -24,6 +34,8 @@ public class MemberResDTO {
             Integer point,
             String profileUrl
     ) {}
+
+
 
     // 리뷰 한건
     @Builder

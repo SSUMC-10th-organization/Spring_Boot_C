@@ -2,6 +2,7 @@ package com.example.umc10th.domain.member.dto;
 
 import com.example.umc10th.domain.member.enums.FoodName;
 import com.example.umc10th.domain.member.enums.Sex;
+import lombok.Builder;
 import lombok.Getter;
 import java.util.List;
 
@@ -19,6 +20,12 @@ public class MemberReqDTO {
         String email;
         String password;
     }
+
+    // 로그인
+    public record Login(
+            String email,
+            String password
+    ) {}
 
     // 마이페이지 - 추가
     public record GetMyPage(

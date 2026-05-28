@@ -8,7 +8,11 @@ import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.entity.Term;
 import com.example.umc10th.domain.member.entity.mapping.MemberFood;
 import com.example.umc10th.domain.member.entity.mapping.MemberTerm;
+import com.example.umc10th.domain.member.exception.MemberException;
+import com.example.umc10th.domain.member.exception.code.MemberErrorCode;
 import com.example.umc10th.domain.member.repository.*;
+import com.example.umc10th.global.entity.AuthMember;
+import com.example.umc10th.global.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -24,6 +28,7 @@ public class AuthService {
     private final MemberFoodRepository memberFoodRepository;
     private final MemberTermRepository memberTermRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtUtil jwtUtil; // 이 줄 추가
 
     @Transactional
     // 컨트롤러에서 넘어온 request 객체에서 시작
@@ -51,5 +56,24 @@ public class AuthService {
         });
 
         return MemberConverter.toSignUpDTO(savedMember);
+    }
+
+    public MemberResDTO.Login login(MemberReqDTO.Login request) {
+        // 1. 이메일로 회원 조회
+        Member member = memberRepository.findByEmail(request.email())
+                .orElseThrow(() -> new MemberException(MemberErrorCode.MEMBER_NOT_FOUND));
+
+        // 2. 비밀번호 검증
+        if (!passwordEncoder.matches(request.password(), member.getPassword())) {
+            throw new MemberException(MemberErrorCode.PASSWORD_NOT_MATCH);
+        }
+
+        // 3. JWT 토큰 생성
+        String accessToken = jwtUtil.createAccessToken(new AuthMember(member));
+
+        // 4. 응답 DTO로 반환
+        return MemberResDTO.Login.builder()
+                .accessToken(accessToken)
+                .build();
     }
 }
