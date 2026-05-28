@@ -1,11 +1,6 @@
 package com.example.umc10th.domain.member.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-
-import java.util.List;
+import lombok.*;
 
 public class UserResponseDTO {
 
@@ -14,7 +9,7 @@ public class UserResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class SignupResultDTO {
-        private Long memberId;
+        private Long userId;
         private String email;
         private String name;
     }
@@ -23,9 +18,30 @@ public class UserResponseDTO {
     @Builder
     @NoArgsConstructor
     @AllArgsConstructor
+    public static class LoginResultDTO {
+        private String accessToken;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class MyPageResultDTO {
+        private Long userId;
+        private String email;
+        private String name;
+        private String gender;
+        private String birthDate;
+        private String address;
+        private Integer currentPoint;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class HomeResultDTO {
-        private String nickname;
-        private Integer point;
-        private List<String> ongoingMissions;
+        private String title;
+        private String message;
     }
 }

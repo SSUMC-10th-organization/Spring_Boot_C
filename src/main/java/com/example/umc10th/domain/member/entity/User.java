@@ -19,11 +19,11 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // 로그인에 사용할 이메일 추가 (보통 유니크 제약조건을 걸음)
+    // 로그인에 사용할 이메일
     @Column(nullable = false, unique = true, length = 50)
     private String email;
 
-    // 암호화된 비밀번호를 저장할 필드 추가
+    // 암호화된 비밀번호 저장
     @Column(nullable = false)
     private String password;
 
