@@ -9,7 +9,8 @@ public class MemberResDTO {
 
     @Builder
     public record SignUpDTO(
-            Long memberId
+            Long memberId,
+            String email
     ) {}
 
     // DTO 안에 inner class 이름은 DTO 접미사 안붙이는 일반적이다.
