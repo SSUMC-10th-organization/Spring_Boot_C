@@ -25,6 +25,13 @@ public class AuthController {
                 memberService.signUp(request));
     }
 
+    @PostMapping("/login")
+    public ApiResponse<MemberResDTO.LoginDTO> login(
+            @RequestBody MemberReqDTO.LoginDTO request
+    ) {
+        return ApiResponse.onSuccess(MemberSuccessCode.LOGIN_SUCCESS,
+                memberService.login(request));
+    }
 
 
 }

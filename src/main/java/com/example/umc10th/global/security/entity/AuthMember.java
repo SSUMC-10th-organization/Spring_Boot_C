@@ -27,6 +27,6 @@ import java.util.List;
 
         @Override
         public String getUsername() {
-            return member.getEmail();
+            return member.getSocialUid();
         }
     }

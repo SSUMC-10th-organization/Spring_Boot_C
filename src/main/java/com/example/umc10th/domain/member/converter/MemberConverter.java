@@ -5,6 +5,7 @@ import com.example.umc10th.domain.member.dto.MemberResDTO;
 import com.example.umc10th.domain.member.entity.Member;
 import com.example.umc10th.domain.member.enums.SocialType;
 import com.example.umc10th.domain.mission.enums.Address;
+import com.example.umc10th.global.security.dto.OAuthDTO;
 
 public class MemberConverter {
 
@@ -33,9 +34,19 @@ public class MemberConverter {
                 .address(request.getAddress() != null ? Address.valueOf(request.getAddress()) : null)
                 .point(0)
                 .socialType(SocialType.LOCAL)
+                .phoneNumber(request.getPhoneNumber())
                 .build();
     }
 
+    public static Member toOAuthMember(OAuthDTO dto) {
+        return Member.builder()
+                .email(dto.getSocialEmail())
+                .name(dto.getName())
+                .socialType(dto.getSocialType())
+                .socialUid(dto.getSocialUid())
+                .point(0)
+                .build();
+    }
 
 
 }
