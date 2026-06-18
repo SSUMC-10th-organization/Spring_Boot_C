@@ -1,0 +1,55 @@
+services:
+  db:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: umc10th
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app1:
+    build: .
+    environment:
+      DB_URL: jdbc:mysql://db:3306/umc10th
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      JWT_SECRET_KEY: thisIsAVeryLongSecretKeyForJwtTokenAt256BitsMinimum12345
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app2:
+    build: .
+    environment:
+      DB_URL: jdbc:mysql://db:3306/umc10th
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      JWT_SECRET_KEY: thisIsAVeryLongSecretKeyForJwtTokenAt256BitsMinimum12345
+    depends_on:
+      db:
+        condition: service_healthy
+
+  app3:
+    build: .
+    environment:
+      DB_URL: jdbc:mysql://db:3306/umc10th
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      JWT_SECRET_KEY: thisIsAVeryLongSecretKeyForJwtTokenAt256BitsMinimum12345
+    depends_on:
+      db:
+        condition: service_healthy
+
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - app1
+      - app2
+      - app3
