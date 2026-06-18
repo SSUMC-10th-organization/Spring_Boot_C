@@ -1,0 +1,84 @@
+package com.example.umc10th.domain.review.converter;
+
+import com.example.umc10th.domain.review.dto.ReviewRequestDto;
+import com.example.umc10th.domain.review.dto.ReviewResponseDto;
+import com.example.umc10th.domain.review.entity.Review;
+import com.example.umc10th.domain.review.entity.ReviewFeedback;
+import com.example.umc10th.domain.store.entity.Store;
+import com.example.umc10th.domain.user.entity.User;
+import org.springframework.data.domain.Slice;
+
+import java.util.List;
+
+public class ReviewConverter {
+
+    public static ReviewResponseDto.ReviewItem toReviewItem(Review review) {
+        return new ReviewResponseDto.ReviewItem(
+                review.getId(),
+                review.getUser().getName(),
+                review.getStar(),
+                review.getCreatedAt(),
+                review.getContent()
+        );
+    }
+
+    public static ReviewResponseDto.ReviewListResult toReviewListResult(Slice<Review> slice) {
+        List<ReviewResponseDto.ReviewItem> items = slice.getContent().stream()
+                .map(ReviewConverter::toReviewItem)
+                .toList();
+        return new ReviewResponseDto.ReviewListResult(items, slice.hasNext());
+    }
+
+    public static Review toReview(User user, Store store, ReviewRequestDto.AddReview request) {
+        return Review.builder()
+                .user(user)
+                .store(store)
+                .content(request.content())
+                .star(request.star())
+                .build();
+    }
+
+    public static ReviewResponseDto.AddReviewResult toAddReviewResult(Review review) {
+        return new ReviewResponseDto.AddReviewResult(
+                review.getId(),
+                review.getStar(),
+                review.getContent(),
+                review.getCreatedAt()
+        );
+    }
+
+    public static ReviewFeedback toFeedback(Review review, String content) {
+        return ReviewFeedback.builder()
+                .review(review)
+                .content(content)
+                .build();
+    }
+
+    public static ReviewResponseDto.AddFeedbackResult toAddFeedbackResult(ReviewFeedback feedback) {
+        return new ReviewResponseDto.AddFeedbackResult(feedback.getId());
+    }
+
+    public static ReviewResponseDto.MyReviewItem toMyReviewItem(Review review) {
+        return new ReviewResponseDto.MyReviewItem(
+                review.getId(),
+                review.getStore().getName(),
+                review.getStar(),
+                review.getContent(),
+                review.getCreatedAt()
+        );
+    }
+
+    public static ReviewResponseDto.MyReviewListResult toMyReviewListResult(Slice<Review> slice) {
+        List<ReviewResponseDto.MyReviewItem> items = slice.getContent().stream()
+                .map(ReviewConverter::toMyReviewItem)
+                .toList();
+        Long nextCursorId = null;
+        Integer nextCursorStar = null;
+        if (slice.hasNext() && !slice.getContent().isEmpty()) {
+            Review last = slice.getContent().get(slice.getContent().size() - 1);
+            nextCursorId = last.getId();
+            nextCursorStar = last.getStar();
+        }
+        return new ReviewResponseDto.MyReviewListResult(items, slice.hasNext(), nextCursorId, nextCursorStar);
+    }
+}
