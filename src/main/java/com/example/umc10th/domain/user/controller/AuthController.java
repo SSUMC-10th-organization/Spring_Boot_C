@@ -25,4 +25,10 @@ public class AuthController implements AuthControllerDocs {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.onSuccess(GeneralSuccessCode.CREATED, result));
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<ApiResponse<UserResponseDto.LoginResult>> login(
+            @Valid @RequestBody UserRequestDto.Login request) {
+        return ResponseEntity.ok(ApiResponse.onSuccess(GeneralSuccessCode.OK, userService.login(request)));
+    }
 }

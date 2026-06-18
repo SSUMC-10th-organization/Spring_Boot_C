@@ -19,4 +19,9 @@ public interface AuthControllerDocs {
     @PostMapping("/signup")
     ResponseEntity<ApiResponse<UserResponseDto.SignUpResult>> signUp(
             @Valid @RequestBody UserRequestDto.SignUp request);
+
+    @Operation(summary = "로그인")
+    @PostMapping("/login")
+    ResponseEntity<ApiResponse<UserResponseDto.LoginResult>> login(
+            @Valid @RequestBody UserRequestDto.Login request);
 }
